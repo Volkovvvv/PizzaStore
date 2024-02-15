@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  justify-content: center;
+
+  li {
+    display: inline-block;
+  }
+
+  :global {
+    .selected {
+      a {
+        background-color: #ffc531;
+      }
+    }
+  }
+  a {
+    padding: 15px 20px;
+    background-color: #ffdf8c;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 100%;
+    &:hover {
+      background-color: #ffc531;
+    }
+  }
+}
