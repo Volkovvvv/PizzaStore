@@ -37,7 +37,7 @@ export const CartItem = ({ id, title, size, type, price, count, imageUrl }) => {
         </div>
         <div class="cart__item-count">
           <div
-            onClick={onClickMinus}
+            onClick={count == 0 ? null : onClickMinus}
             class="button button--outline button--circle cart__item-count-minus">
             <svg
               width="10"
