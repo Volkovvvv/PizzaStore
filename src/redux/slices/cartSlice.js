@@ -23,7 +23,7 @@ const cartSlice = createSlice({
     // },
 
     addItem(state, action) {
-      const findItem = state.items.find((obj) => obj.id == action.payload.id);
+      const findItem = state.items.find((obj) => obj.id === action.payload.id);
       if (findItem) {
         findItem.count++;
       } else {
@@ -32,7 +32,7 @@ const cartSlice = createSlice({
       state.totalPrice = calculateTotalPrice(state.items);
     },
     minusItem(state, action) {
-      const findItem = state.items.find((obj) => obj.id == action.payload);
+      const findItem = state.items.find((obj) => obj.id === action.payload);
       if (findItem) {
         findItem.count--;
         state.totalPrice = calculateTotalPrice(state.items);
