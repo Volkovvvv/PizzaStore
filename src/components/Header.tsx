@@ -11,7 +11,11 @@ function Header() {
 
   console.log(location);
 
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  type Item = {
+    count: number;
+  };
+
+  const totalCount = items.reduce((sum: number, item: Item) => sum + item.count, 0);
 
   return (
     <div className="header">

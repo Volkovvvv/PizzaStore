@@ -1,6 +1,21 @@
 import React from 'react';
 
-const list = [
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+
+type Value = {
+  name: string;
+  sortProperty: string;
+};
+
+type SortProps = {
+  value: Value;
+  onClickSort: (obj: SortItem) => void;
+};
+
+const sortList: SortItem[] = [
   { name: 'популярности (DESC)', sortProperty: 'rating' },
   { name: 'популярности (ASC)', sortProperty: '-rating' },
   { name: 'цене (DESC)', sortProperty: 'price' },
@@ -9,16 +24,16 @@ const list = [
   { name: 'алфавиту (ASC)', sortProperty: '-title' },
 ];
 
-function Sort({ value, onClickSort }) {
+const Sort: React.FC<SortProps> = ({ value, onClickSort }) => {
   const [open, setOpen] = React.useState(false);
 
   const sortName = value.name;
 
-  const sortRef = React.useRef();
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (sortRef.current && !e.composedPath().includes(sortRef.current)) {
         setOpen(false);
         console.log('click outside');
       }
@@ -47,7 +62,7 @@ function Sort({ value, onClickSort }) {
       {open && (
         <div className="sort__popup">
           <ul>
-            {list.map((obj, i) => (
+            {sortList.map((obj, i) => (
               <li
                 key={i}
                 onClick={() => onClickSort(obj)}
@@ -60,6 +75,6 @@ function Sort({ value, onClickSort }) {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

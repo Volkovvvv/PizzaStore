@@ -1,8 +1,8 @@
 import React from 'react';
 
 import qs from 'qs';
-import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   setCategoryId,
   setSortType,
@@ -16,25 +16,36 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import { useAppDispatch } from '../redux/store';
 
-export const Home = () => {
+export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { categoryId, currentPage, sortType, searchValue } = useSelector(selectFilter);
 
   const { items, status } = useSelector(selectPizzaData);
 
-  const onClickCategory = (id) => {
-    dispatch(setCategoryId(id));
+  const onClickCategory = (idx: number) => {
+    dispatch(setCategoryId(idx));
   };
 
-  const onClickSort = (obj) => {
+  const onClickSort = (obj: any) => {
     dispatch(setSortType(obj));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
+  };
+
+  type Obj = {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    sizes: number[];
+    types: number[];
+    rating: number;
   };
 
   React.useEffect(() => {
@@ -59,17 +70,13 @@ export const Home = () => {
     fetchData();
   }, [categoryId, sortType.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj) => (
-    <Link key={obj.id} to={`pizza/${obj.id}`}>
-      <PizzaBlock {...obj} />
-    </Link>
-  ));
+  const pizzas = items.map((obj: Obj) => <PizzaBlock {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onClickCategory={onClickCategory} />
+        <Categories value={categoryId} onClickCategory={onClickCategory} getCategories={() => {}} />
         <Sort value={sortType} onClickSort={onClickSort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
