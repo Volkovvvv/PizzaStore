@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartItem, addItem, selectCartItemById } from '../../redux/slices/cartSlice';
+
 import { Link } from 'react-router-dom';
+import { selectCartItemById } from '../../redux/cart/selectors';
+import { CartItem } from '../../redux/cart/types';
+import { addItem } from '../../redux/cart/slice';
 
 const typeNames = ['тонкое', 'традиционное'];
 
@@ -49,14 +52,20 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price, imageUrl, siz
         <div className="pizza-block__selector">
           <ul>
             {types.map((type, i) => (
-              <li onClick={() => setActiveType(i)} className={activeType === i ? 'active' : ''}>
+              <li
+                key={type}
+                onClick={() => setActiveType(i)}
+                className={activeType === i ? 'active' : ''}>
                 {typeNames[i]}
               </li>
             ))}
           </ul>
           <ul>
             {sizes.map((size, i) => (
-              <li onClick={() => setActiveSize(i)} className={activeSize === i ? 'active' : ''}>
+              <li
+                key={size}
+                onClick={() => setActiveSize(i)}
+                className={activeSize === i ? 'active' : ''}>
                 {size} см.
               </li>
             ))}

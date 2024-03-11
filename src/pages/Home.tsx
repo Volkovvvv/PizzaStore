@@ -3,13 +3,6 @@ import React from 'react';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {
-  setCategoryId,
-  setSortType,
-  setCurrentPage,
-  selectFilter,
-} from '../redux/slices/filterSlice';
-import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -17,22 +10,25 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { useAppDispatch } from '../redux/store';
+import { selectFilter } from '../redux/filter/selectors';
+import { selectPizzaData } from '../redux/pizza/selector';
+import { setCategoryId, setCurrentPage, setSortType } from '../redux/filter/slice';
+import { fetchPizzas } from '../redux/pizza/asyncActions';
 
 export const Home: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { categoryId, currentPage, sortType, searchValue } = useSelector(selectFilter);
 
   const { items, status } = useSelector(selectPizzaData);
 
-  const onClickCategory = (idx: number) => {
+  const onClickCategory = React.useCallback((idx: number) => {
     dispatch(setCategoryId(idx));
-  };
+  }, []);
 
-  const onClickSort = (obj: any) => {
+  const onClickSort = React.useCallback((obj: any) => {
     dispatch(setSortType(obj));
-  };
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -70,7 +66,7 @@ export const Home: React.FC = () => {
     fetchData();
   }, [categoryId, sortType.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj: Obj) => <PizzaBlock {...obj} />);
+  const pizzas = items.map((obj: Obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (

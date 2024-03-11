@@ -24,7 +24,7 @@ const sortList: SortItem[] = [
   { name: 'алфавиту (ASC)', sortProperty: '-title' },
 ];
 
-const Sort: React.FC<SortProps> = ({ value, onClickSort }) => {
+const Sort: React.FC<SortProps> = React.memo(({ value, onClickSort }) => {
   const [open, setOpen] = React.useState(false);
 
   const sortName = value.name;
@@ -35,7 +35,6 @@ const Sort: React.FC<SortProps> = ({ value, onClickSort }) => {
     const handleClickOutside = (e: MouseEvent) => {
       if (sortRef.current && !e.composedPath().includes(sortRef.current)) {
         setOpen(false);
-        console.log('click outside');
       }
     };
     document.body.addEventListener('click', handleClickOutside);
@@ -75,6 +74,6 @@ const Sort: React.FC<SortProps> = ({ value, onClickSort }) => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;
